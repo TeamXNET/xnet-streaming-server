@@ -1,0 +1,35 @@
+version: '3'
+
+# Microservices
+services:
+
+  # API Server Configuration
+  api-server:
+    container_name: bms-api-server-dev
+    image: bitwavetv/bms-api-server:latest
+
+    ports:
+      - "3000:3000"
+
+    networks:
+      internal:
+        aliases:
+          - bms-api-server
+          - api-server
+
+    # Mount archives & API creds
+    volumes:
+      - /srv/archives:/archives
+      - /srv/creds:/api-server/creds
+
+    environment:
+      - BMS_ENV=dev
+      - BMS_LOGLEVEL=4
+      - BMS_TIMEZONE=America/Los_Angeles
+      - BMS_SERVER=stream.bitwave.tv
+      - BMS_CDN=cdn.stream.bitwave.tv
+      - FORCE_COLOR=1
+
+# Network Definitions
+networks:
+  internal:
